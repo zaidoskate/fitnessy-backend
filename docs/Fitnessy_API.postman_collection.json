@@ -1,0 +1,401 @@
+{
+  "info": {
+    "_postman_id": "a7b8c9d0-1234-4567-89ab-fitnessy2026",
+    "name": "Fitnessy API - Colección Oficial (RESTful + JWT RBAC)",
+    "description": "Colección completa de endpoints para Fitnessy (Autenticación, Categorías de Ejercicio y Récords Fitness) con arquitectura en 4 capas y base de datos en 3NF.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Auth",
+      "item": [
+        {
+          "name": "Login (Usuario Atleta - Carlos)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token', res.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"carlos.mendoza@gmail.com\",\n  \"password\": \"Password_123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login (Administrador - Zaid)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token', res.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"correo\": \"zaid.admin@fitnessy.com\",\n  \"password\": \"Password_123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Registrar Nuevo Atleta (POST /api/auth/register)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token', res.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Alejandro\",\n  \"apellido_paterno\": \"Gómez\",\n  \"apellido_materno\": \"Silva\",\n  \"correo\": \"alejandro.gomez@gmail.com\",\n  \"password\": \"Password_123\",\n  \"edad\": 26,\n  \"peso_corporal\": 82.5,\n  \"pais\": \"México\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Perfil Actual (GET /api/auth/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Categorias",
+      "item": [
+        {
+          "name": "Listar Categorías (GET /api/categorias)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias"]
+            }
+          }
+        },
+        {
+          "name": "Crear Categoría - Solo Admin (POST /api/categorias)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Press Militar con Barra\",\n  \"grupo_muscular\": \"Hombros y Tríceps\",\n  \"descripcion\": \"Empuje vertical estricto de pie desde las clavículas hasta bloqueo completo.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Categoría - Solo Admin (PUT /api/categorias/:id)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Press Militar Estricto\",\n  \"grupo_muscular\": \"Deltoides y Tríceps\",\n  \"descripcion\": \"Empuje vertical de pie sin impulso de piernas (Strict Overhead Press).\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias/6",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias", "6"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Categoría - Solo Admin (DELETE /api/categorias/:id)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/categorias/6",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categorias", "6"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Records CRUD",
+      "item": [
+        {
+          "name": "Listar Récords con Filtros y Paginación (GET /api/records)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/records?page=1&limit=6&id_categoria=&es_oficial=&search=",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "records"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "6"
+                },
+                {
+                  "key": "id_categoria",
+                  "value": ""
+                },
+                {
+                  "key": "es_oficial",
+                  "value": ""
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener Top 3 Récords Oficiales (GET /api/records/top)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/records/top",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "records", "top"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Estadísticas Globales (GET /api/records/stats)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/records/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "records", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Detalle de un Récord por ID (GET /api/records/:id)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/records/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "records", "1"]
+            }
+          }
+        },
+        {
+          "name": "Crear Nuevo Récord (POST /api/records)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_categoria\": 1,\n  \"peso_levantado\": 205.5,\n  \"repeticiones\": 1,\n  \"fecha\": \"2026-11-11\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/records",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "records"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Récord (PUT /api/records/:id)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_categoria\": 1,\n  \"peso_levantado\": 210.0,\n  \"repeticiones\": 1,\n  \"fecha\": \"2026-11-11\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/records/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "records", "1"]
+            }
+          }
+        },
+        {
+          "name": "Aprobar / Revocar Récord Oficial - Solo Admin (PATCH /api/records/:id/status)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"es_oficial\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/records/6",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "records", "6"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Récord (DELETE /api/records/:id)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/records/6",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "records", "6"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
