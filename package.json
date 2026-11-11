@@ -1,0 +1,28 @@
+{
+  "name": "fitnessy-backend",
+  "version": "1.0.0",
+  "description": "Backend API RESTful para Fitnessy - Plataforma de récords de levantamientos de fuerza y calistenia",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "jest --runInBand",
+    "seed": "node src/config/seed.js"
+  },
+  "author": "Zaid Alexis Vázquez Ramírez",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.24.6"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2",
+    "supertest": "^7.3.2"
+  }
+}
