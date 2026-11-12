@@ -4,7 +4,7 @@ require('dotenv').config({ quiet: true });
 class Database {
   constructor() {
     if (!Database.instance) {
-      const pool = mysql.createPool({
+      this.pool = mysql.createPool({
         host: process.env.DB_HOST,
         port: Number(process.env.DB_PORT) || 3306,
         user: process.env.DB_USER,
