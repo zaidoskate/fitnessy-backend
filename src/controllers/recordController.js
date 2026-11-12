@@ -2,10 +2,6 @@ const recordModel = require('../models/recordModel');
 const categoriaModel = require('../models/categoriaModel');
 
 const recordController = {
-  /**
-   * GET /api/records (Público)
-   * Soporta query params: ?id_categoria=&es_oficial=&search=&page=1&limit=6
-   */
   async getAll(req, res) {
     try {
       const { id_categoria, es_oficial, search } = req.query;
@@ -45,10 +41,6 @@ const recordController = {
     }
   },
 
-  /**
-   * GET /api/records/top (Público)
-   * Devuelve el Top 3 de récords oficiales
-   */
   async getTop3(req, res) {
     try {
       const topRecords = await recordModel.findTop3();
@@ -61,10 +53,6 @@ const recordController = {
     }
   },
 
-  /**
-   * GET /api/records/stats (Público)
-   * Devuelve métricas generales de la plataforma
-   */
   async getStats(req, res) {
     try {
       const stats = await recordModel.getStats();
@@ -77,9 +65,6 @@ const recordController = {
     }
   },
 
-  /**
-   * GET /api/records/:id (Público)
-   */
   async getById(req, res) {
     try {
       const id = Number(req.params.id);
@@ -100,9 +85,6 @@ const recordController = {
     }
   },
 
-  /**
-   * POST /api/records (Protegido: user y admin)
-   */
   async create(req, res) {
     try {
       const {
@@ -158,9 +140,6 @@ const recordController = {
     }
   },
 
-  /**
-   * PUT /api/records/:id (Protegido: dueño del récord o admin)
-   */
   async update(req, res) {
     try {
       const id = Number(req.params.id);
@@ -194,7 +173,7 @@ const recordController = {
         });
       }
 
-      // Si es admin puede cambiar es_oficial; si es user se mantiene o reinicia a false para re-validación
+      // Si es admin puede cambiar es_oficial. Si es user normal se mantiene o reinicia a false para revalidación
       const nuevoEstadoOficial = isAdmin
         ? es_oficial !== undefined
           ? Boolean(es_oficial)
@@ -221,9 +200,6 @@ const recordController = {
     }
   },
 
-  /**
-   * PATCH /api/records/:id/status (Protegido: admin)
-   */
   async updateStatus(req, res) {
     try {
       const id = Number(req.params.id);
@@ -242,9 +218,8 @@ const recordController = {
       );
 
       return res.status(200).json({
-        message: `Estatus del récord actualizado a ${
-          recordActualizado.es_oficial ? 'oficial' : 'pendiente'
-        }.`,
+        message: `Estatus del récord actualizado a ${recordActualizado.es_oficial ? 'oficial' : 'pendiente'
+          }.`,
         record: recordActualizado
       });
     } catch (error) {
@@ -255,9 +230,6 @@ const recordController = {
     }
   },
 
-  /**
-   * DELETE /api/records/:id (Protegido: dueño del récord o admin)
-   */
   async remove(req, res) {
     try {
       const id = Number(req.params.id);

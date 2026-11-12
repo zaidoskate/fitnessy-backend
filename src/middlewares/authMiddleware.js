@@ -1,9 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 
-/**
- * Middleware para capturar y formatear errores de express-validator
- */
 const validateRequest = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -15,9 +12,6 @@ const validateRequest = (req, res, next) => {
   next();
 };
 
-/**
- * Middleware para verificar el token JWT en el header Authorization: Bearer <token>
- */
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -41,9 +35,6 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-/**
- * Middleware RBAC para autorizar según roles permitidos ('admin', 'user')
- */
 const requireRole = (...roles) => {
   return (req, res, next) => {
     if (!req.user || !roles.includes(req.user.rol)) {

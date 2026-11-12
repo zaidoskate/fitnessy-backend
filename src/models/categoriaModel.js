@@ -1,10 +1,6 @@
 const pool = require('../config/db');
 
 const categoriaModel = {
-  /**
-   * Devuelve todas las categorías de ejercicio ordenadas por id_categoria ASC.
-   * @returns {Promise<Array>}
-   */
   async findAll() {
     const query = `
       SELECT id_categoria, nombre, grupo_muscular, descripcion
@@ -15,11 +11,6 @@ const categoriaModel = {
     return rows;
   },
 
-  /**
-   * Obtiene una categoría de ejercicio por su ID.
-   * @param {number} id_categoria
-   * @returns {Promise<Object|null>}
-   */
   async findById(id_categoria) {
     const query = `
       SELECT id_categoria, nombre, grupo_muscular, descripcion
@@ -31,11 +22,6 @@ const categoriaModel = {
     return rows.length > 0 ? rows[0] : null;
   },
 
-  /**
-   * Crea una nueva categoría en CategoriaEjercicio.
-   * @param {Object} data
-   * @returns {Promise<Object>}
-   */
   async create({ nombre, grupo_muscular, descripcion }) {
     const query = `
       INSERT INTO CategoriaEjercicio (nombre, grupo_muscular, descripcion)
@@ -54,12 +40,6 @@ const categoriaModel = {
     };
   },
 
-  /**
-   * Actualiza una categoría existente por su ID.
-   * @param {number} id_categoria
-   * @param {Object} data
-   * @returns {Promise<boolean>}
-   */
   async update(id_categoria, { nombre, grupo_muscular, descripcion }) {
     const query = `
       UPDATE CategoriaEjercicio
@@ -75,11 +55,6 @@ const categoriaModel = {
     return result.affectedRows > 0;
   },
 
-  /**
-   * Elimina una categoría por su ID.
-   * @param {number} id_categoria
-   * @returns {Promise<boolean>}
-   */
   async remove(id_categoria) {
     const query = `
       DELETE FROM CategoriaEjercicio

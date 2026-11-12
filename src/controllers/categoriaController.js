@@ -1,9 +1,6 @@
 const categoriaModel = require('../models/categoriaModel');
 
 const categoriaController = {
-  /**
-   * GET /api/categorias (Público)
-   */
   async getAll(req, res) {
     try {
       const categorias = await categoriaModel.findAll();
@@ -16,9 +13,6 @@ const categoriaController = {
     }
   },
 
-  /**
-   * GET /api/categorias/:id (Público)
-   */
   async getById(req, res) {
     try {
       const id = Number(req.params.id);
@@ -37,9 +31,6 @@ const categoriaController = {
     }
   },
 
-  /**
-   * POST /api/categorias (Protegido: admin)
-   */
   async create(req, res) {
     try {
       const { nombre, grupo_muscular, descripcion } = req.body;
@@ -66,9 +57,6 @@ const categoriaController = {
     }
   },
 
-  /**
-   * PUT /api/categorias/:id (Protegido: admin)
-   */
   async update(req, res) {
     try {
       const id = Number(req.params.id);
@@ -104,9 +92,6 @@ const categoriaController = {
     }
   },
 
-  /**
-   * DELETE /api/categorias/:id (Protegido: admin)
-   */
   async remove(req, res) {
     try {
       const id = Number(req.params.id);

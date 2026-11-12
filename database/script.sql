@@ -1,20 +1,13 @@
--- ==========================================================
--- SCRIPT DE BASE DE DATOS: FITNESSY (3NF)
--- Autor: Vázquez Ramírez Zaid Alexis
--- ==========================================================
-
 DROP DATABASE IF EXISTS fitnessy_db;
 CREATE DATABASE fitnessy_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE fitnessy_db;
 
--- 1. Tabla RolUsuario
 CREATE TABLE RolUsuario (
     id_rol INT AUTO_INCREMENT PRIMARY KEY,
     nombre_rol VARCHAR(30) NOT NULL UNIQUE,
     descripcion_rol VARCHAR(150) NOT NULL
 ) ENGINE=InnoDB;
 
--- 2. Tabla Usuario (Atributos atómicos según el modelo ER)
 CREATE TABLE Usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     id_rol INT NOT NULL,
@@ -28,7 +21,6 @@ CREATE TABLE Usuario (
         ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- 3. Tabla Atleta (Relación tiene_perfil con Usuario)
 CREATE TABLE Atleta (
     id_atleta INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL UNIQUE,
@@ -40,7 +32,6 @@ CREATE TABLE Atleta (
         ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- 4. Tabla CategoriaEjercicio
 CREATE TABLE CategoriaEjercicio (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(80) NOT NULL UNIQUE,
@@ -48,7 +39,6 @@ CREATE TABLE CategoriaEjercicio (
     descripcion VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;
 
--- 5. Tabla RecordFitness (Relaciones registra con Atleta y clasifica con CategoriaEjercicio)
 CREATE TABLE RecordFitness (
     id_record INT AUTO_INCREMENT PRIMARY KEY,
     id_categoria INT NOT NULL,
@@ -65,18 +55,11 @@ CREATE TABLE RecordFitness (
         ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ==========================================================
--- USUARIO ESPECÍFICO DE BASE DE DATOS PARA EL BACKEND (.env)
--- ==========================================================
 CREATE USER IF NOT EXISTS 'fitnessy_db_user'@'localhost' IDENTIFIED BY 'Password_123';
 GRANT SELECT, INSERT, UPDATE, DELETE ON fitnessy_db.* TO 'fitnessy_db_user'@'localhost';
 FLUSH PRIVILEGES;
 
--- ==========================================================
--- VALORES POR DEFECTO (SEED DATA)
 -- Contraseña en texto plano para todas las cuentas de prueba: Password_123
--- Hash generado con bcryptjs.hashSync('Password_123', 10)
--- ==========================================================
 INSERT INTO RolUsuario (nombre_rol, descripcion_rol) VALUES
 ('admin', 'Valida y aprueba récords de usuarios para el salón de la fama y gestiona categorías'),
 ('user', 'Atleta que registra, edita y elimina sus propios récords de levantamiento');

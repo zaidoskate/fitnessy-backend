@@ -10,9 +10,6 @@ const formatNombreCompleto = (usuario) =>
     .join(' ');
 
 const authController = {
-  /**
-   * Autentica a un usuario por correo y contraseña y devuelve un JWT
-   */
   async login(req, res) {
     try {
       const { correo, password } = req.body;
@@ -67,9 +64,6 @@ const authController = {
     }
   },
 
-  /**
-   * Registra un nuevo usuario y su perfil de atleta en una transacción atómica
-   */
   async register(req, res) {
     try {
       const {
@@ -139,9 +133,6 @@ const authController = {
     }
   },
 
-  /**
-   * Obtiene el perfil del usuario y atleta autenticado mediante su token JWT
-   */
   async getMe(req, res) {
     try {
       const usuario = await usuarioModel.findById(req.user.id);

@@ -32,7 +32,6 @@ const recordValidation = [
     .withMessage('La fecha debe tener un formato válido (YYYY-MM-DD).')
 ];
 
-// Endpoints públicos de consulta
 router.get('/', recordController.getAll);
 router.get('/top', recordController.getTop3);
 router.get('/stats', recordController.getStats);
@@ -44,7 +43,6 @@ router.get(
   recordController.getById
 );
 
-// Endpoints protegidos de escritura (CRUD + RBAC)
 router.post(
   '/',
   verifyToken,

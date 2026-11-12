@@ -1,11 +1,6 @@
 const pool = require('../config/db');
 
 const usuarioModel = {
-  /**
-   * Busca un usuario por su correo electrónico incluyendo su rol y perfil de atleta.
-   * @param {string} correo
-   * @returns {Promise<Object|null>}
-   */
   async findByCorreo(correo) {
     const query = `
       SELECT 
@@ -30,11 +25,6 @@ const usuarioModel = {
     return rows.length > 0 ? rows[0] : null;
   },
 
-  /**
-   * Busca un usuario por su ID incluyendo su rol y perfil de atleta (sin password).
-   * @param {number} id_usuario
-   * @returns {Promise<Object|null>}
-   */
   async findById(id_usuario) {
     const query = `
       SELECT 
@@ -58,11 +48,6 @@ const usuarioModel = {
     return rows.length > 0 ? rows[0] : null;
   },
 
-  /**
-   * Registra un nuevo usuario con rol 'user' (id_rol = 2) y su perfil de Atleta mediante transacción SQL.
-   * @param {Object} data
-   * @returns {Promise<{id_usuario: number, id_atleta: number}>}
-   */
   async registerAtleta({
     nombre,
     apellido_paterno,

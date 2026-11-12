@@ -33,11 +33,6 @@ const BASE_SELECT = `
 `;
 
 const recordModel = {
-  /**
-   * Obtiene los récords con filtros opcionales, ordenamiento y paginación.
-   * @param {Object} filters
-   * @returns {Promise<{records: Array, total: number}>}
-   */
   async findAll({ id_categoria, es_oficial, search, limit = 6, offset = 0 } = {}) {
     const conditions = [];
     const params = [];
@@ -50,9 +45,9 @@ const recordModel = {
     if (es_oficial !== undefined && es_oficial !== '') {
       const boolValue =
         es_oficial === true ||
-        es_oficial === 'true' ||
-        es_oficial === '1' ||
-        es_oficial === 1
+          es_oficial === 'true' ||
+          es_oficial === '1' ||
+          es_oficial === 1
           ? 1
           : 0;
       conditions.push('rf.es_oficial = ?');
@@ -99,10 +94,6 @@ const recordModel = {
     };
   },
 
-  /**
-   * Retorna los 3 mejores récords oficiales ordenados por peso_levantado DESC.
-   * @returns {Promise<Array>}
-   */
   async findTop3() {
     const query = `
       ${BASE_SELECT}
@@ -114,10 +105,6 @@ const recordModel = {
     return rows.map(normalizeRecord);
   },
 
-  /**
-   * Retorna métricas generales para el dashboard / home de la plataforma.
-   * @returns {Promise<{total_records_oficiales: number, total_atletas: number, total_categorias: number}>}
-   */
   async getStats() {
     const query = `
       SELECT
@@ -134,11 +121,6 @@ const recordModel = {
     };
   },
 
-  /**
-   * Busca un récord específico por ID con toda la información relacionada.
-   * @param {number} id_record
-   * @returns {Promise<Object|null>}
-   */
   async findById(id_record) {
     const query = `
       ${BASE_SELECT}
@@ -149,11 +131,6 @@ const recordModel = {
     return rows.length > 0 ? normalizeRecord(rows[0]) : null;
   },
 
-  /**
-   * Inserta un nuevo récord en RecordFitness.
-   * @param {Object} data
-   * @returns {Promise<Object>}
-   */
   async create({
     id_categoria,
     id_atleta,
@@ -178,12 +155,6 @@ const recordModel = {
     return this.findById(result.insertId);
   },
 
-  /**
-   * Actualiza los datos de un récord existente.
-   * @param {number} id_record
-   * @param {Object} data
-   * @returns {Promise<Object|null>}
-   */
   async update(
     id_record,
     { id_categoria, peso_levantado, repeticiones, fecha, es_oficial }
@@ -205,12 +176,6 @@ const recordModel = {
     return this.findById(id_record);
   },
 
-  /**
-   * Actualiza únicamente el estatus oficial de un récord.
-   * @param {number} id_record
-   * @param {boolean} es_oficial
-   * @returns {Promise<Object|null>}
-   */
   async updateStatus(id_record, es_oficial) {
     const query = `
       UPDATE RecordFitness
@@ -221,11 +186,6 @@ const recordModel = {
     return this.findById(id_record);
   },
 
-  /**
-   * Elimina un récord por su ID.
-   * @param {number} id_record
-   * @returns {Promise<boolean>}
-   */
   async remove(id_record) {
     const query = `
       DELETE FROM RecordFitness

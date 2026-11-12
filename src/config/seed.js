@@ -1,10 +1,6 @@
 const bcrypt = require('bcryptjs');
 const pool = require('./db');
 
-/**
- * Script de sincronización/actualización de contraseñas de prueba (Password_123)
- * Garantiza que todos los usuarios de prueba tengan un hash bcrypt válido.
- */
 async function seedPasswords() {
   try {
     const passwordHash = bcrypt.hashSync('Password_123', 10);
